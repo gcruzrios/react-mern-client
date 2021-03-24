@@ -1,12 +1,11 @@
 import React from 'react'
 import {
     Route,
-    Link,
     Switch
   } from "react-router-dom";
 import {Layout} from "antd"
 import "./LayoutBasic.scss";
-import routes from '../config/routes';
+
 
 export default function LayoutBasic(props) {
 

@@ -5,7 +5,7 @@ import "./MenuTop.scss";
 import AgusLogo from "../../../assets/img/png/logo-white.png"
 
 import { logout } from "../../../api/auth"
-import { Redirect } from 'react-router';
+
 
 export default function MenuTop(props) {
     const {menuCollapsed, setMenuCollapsed} = props;

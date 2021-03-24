@@ -10,7 +10,7 @@ import MenuTop from "../components/Admin/MenuTop";
 import MenuSider from "../components/Admin/MenuSider";
 import AdminSignIn from "../pages/Admin/SignIn/SignIn";
 import "./LayoutAdmin.scss";
-import routes from '../config/routes';
+
 
 
 export default function LayoutAdmin(props) {

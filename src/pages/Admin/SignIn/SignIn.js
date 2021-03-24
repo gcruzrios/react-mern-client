@@ -2,9 +2,7 @@ import React from 'react'
 import {Layout, Tabs} from 'antd';
 import {
     Redirect,
-    Route,
-    Switch
-  } from "react-router-dom";
+} from "react-router-dom";
 import AgusLogo from "../../../assets/img/png/logo-white.png";
 
 import "./SignIn.scss"
