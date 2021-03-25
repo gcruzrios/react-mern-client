@@ -62,7 +62,7 @@ export default function EditUserForm(props) {
            
         }else{
             delete userUpdate.password;
-            delete userUpdate.repeatpassword;
+            delete userUpdate.repeatPassword;
         }
 
         //console.log(userData);

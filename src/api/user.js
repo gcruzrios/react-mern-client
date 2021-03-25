@@ -155,7 +155,7 @@ export function updateUserApi(token, user, userId) {
       Authorization: token,
     },
   };
-
+  console.log(params);
   return fetch(url, params)
     .then((response) => {
       return response.json();
