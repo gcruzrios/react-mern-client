@@ -1,36 +1,104 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Avatar, Form, Icon, Input, Select, Button, Row, Col } from "antd"
+import { Avatar, Form, Icon, Input, Select, Button, Row, Col, notification } from "antd"
 import { useDropzone } from "react-dropzone";
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
+import {updateUserApi, uploadAvatarApi, getAvatarApi} from "../../../../api/user";
+import { getAccessTokenApi } from "../../../../api/auth";
 
 import "./EditUserForm.scss";
 export default function EditUserForm(props) {
 
-    const {user} = props;
+    const {user, setIsVisibleModal, setReloadUsers} = props;
 
     const [avatar, setAvatar] = useState(null);
 
-    const [userData, setUserData] = useState({
-        name: user.name,
-        lastname: user.lastname,
-        email: user.email,
-        role:user.role,
-        avatar: user.avatar
-    })
+    const [userData, setUserData] = useState({})
 
+    useEffect(() => {
+        setUserData({
+            name: user.name,
+            lastname: user.lastname,
+            email: user.email,
+            role:user.role,
+            avatar: user.avatar,
+            password:"",
+            repeatPassword:""
+        })
+    }, [user])
     //console.log(avatar);
-
+    useEffect(() => {
+       if(user.avatar){
+           getAvatarApi(user.avatar).then(response => {
+               setAvatar(response);
+           })
+       }else{
+           setAvatar(null)
+       }
+    }, [user])
 
     useEffect(() => {
        if (avatar){
-           setUserData({...userData, avatar})
+           setUserData({...userData, avatar: avatar.file})
        }
     }, [avatar])
 
     const updateUser = e => {
         e.preventDefault();
-        console.log(userData);
-    }
+
+        const token  = getAccessTokenApi();
+        let userUpdate = userData;
+
+     
+        if(userUpdate.password || userUpdate.repeatPassword ){
+            if(userUpdate.password !== userUpdate.repeatPassword){
+                notification["error"]({
+                    message:"Las contraseñas tienen que ser iguales."
+                })
+               return;
+            }else{
+                delete userUpdate.repeatPassword;
+                console.log(userUpdate);
+            }
+           
+        }else{
+            delete userUpdate.password;
+            delete userUpdate.repeatpassword;
+        }
+
+        //console.log(userData);
+        
+
+        if(!userUpdate.name || !userUpdate.lastname || !userUpdate.email){
+            notification["error"]({
+                message:"El nombre, apellido o el email no pueden estar vacíos."
+            });
+            return; 
+        }
+
+        
+
+        if(typeof userUpdate.avatar ==="object"){
+            uploadAvatarApi(token, userUpdate.avatar, user._id).then(response => {
+                userUpdate.avatar = response.avatarName;
+                updateUserApi(token, userUpdate, user._id).then(result =>{
+                    notification["success"]({
+                        message:result.message
+                    }); 
+                    setIsVisibleModal(false);
+                    setReloadUsers(true);
+                });
+            });
+        }else{
+            updateUserApi(token, userUpdate, user._id).then(result =>{
+                notification["success"]({
+                    message:result.message
+                }); 
+                setIsVisibleModal(false);
+                setReloadUsers(true);
+            });
+        }
+        //setIsVisibleModal(false)
+    };
 
     return (
         <div className="edit-user-form">
@@ -43,6 +111,20 @@ export default function EditUserForm(props) {
 
 function UploadAvatar(props){
     const { avatar, setAvatar } = props;
+
+    const [avatarUrl, setAvatarUrl] = useState(null);
+
+    useEffect(() => {
+        if(avatar){
+            if(avatar.preview){
+               setAvatarUrl(avatar.preview) 
+            }else{
+               setAvatarUrl(avatar);
+            }
+        }else{
+           setAvatarUrl(null); 
+        }
+    }, [avatar])
 
     const onDrop = useCallback(
         acceptedFiles => {
@@ -63,7 +145,7 @@ function UploadAvatar(props){
             {isDragActive ? (
                 <Avatar size={150} src={NoAvatar} />
             ):(
-                <Avatar size={150} src={ avatar ? avatar.preview : NoAvatar } />
+                <Avatar size={150} src={avatarUrl ? avatarUrl : NoAvatar } />
             )}
         </div>
     )
@@ -135,6 +217,7 @@ function EditForm(props){
                     prefix={<Icon type="lock" />}
                     type="password"
                     placeholder="Contraseña"
+                    value={userData.password}
                     onChange={e =>
                         setUserData({ ...userData, password: e.target.value })
                     }
@@ -147,6 +230,7 @@ function EditForm(props){
                     prefix={<Icon type="lock" />}
                     type="password"
                     placeholder="Repetir contraseña"
+                    value={userData.repeatPassword}
                     onChange={e =>
                         setUserData({ ...userData, repeatPassword: e.target.value })
                     }
