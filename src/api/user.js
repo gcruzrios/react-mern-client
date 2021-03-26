@@ -155,7 +155,7 @@ export function updateUserApi(token, user, userId) {
       Authorization: token,
     },
   };
-  console.log(params);
+  
   return fetch(url, params)
     .then((response) => {
       return response.json();
@@ -193,7 +193,7 @@ export function activateUserApi(token, userId, status) {
     });
 }
 
-export function deleteUserApi(token, userId){
+export function deleteUserApi(token, userId) {
   const url = `${basePath}/${apiVersion}/delete-user/${userId}`;
   const params = {
     method: "DELETE",
@@ -212,4 +212,25 @@ export function deleteUserApi(token, userId){
     .catch((err) => {
       return err.message;
     });
+}
+
+export function signUpAdminApi(token, data) {
+  const url = `${basePath}/${apiVersion}/sign-up-admin`;
+  const params = {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+
+  return fetch(url, params)
+          .then((response) => {
+              return response.json();
+      }).then (result =>{
+        return result.message;
+      }).catch (err =>{
+        return err.message;
+      })
 }

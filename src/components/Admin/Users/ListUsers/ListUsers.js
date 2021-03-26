@@ -4,6 +4,7 @@ import  NoAvatar from "../../../../assets/img/png/no-avatar.png"
 
 import Modal from '../../../Modal';
 import EditUserForm from '../EditUserForm/EditUserForm';
+import AddUserForm from "../AddUserForm/AddUserForm";
 import {getAvatarApi, activateUserApi, deleteUserApi } from "../../../../api/user";
 import {getAccessTokenApi} from "../../../../api/auth"
 
@@ -27,10 +28,7 @@ export default function ListUsers(props) {
         setIsVisibleModal(true);
         setModalTitle("Creando un nuevo Usuario");
         setModalContent(
-            <div>
-                <h1>Formulario creación de usuario</h1>
-                <h2>Admin</h2>
-            </div>
+           <AddUserForm setIsVisibleModal={setIsVisibleModal} setReloadUsers={setReloadUsers} />
         )
     }
 
