@@ -36,7 +36,7 @@ export default function MenuWebList(props) {
 
         menu.forEach(item => {
             listItemsArray.push({
-                content:(<MenuItem item={item} activateMenu={activateMenu} editMenuWebModal={editMenuWebModal}/>)
+                content:(<MenuItem item={item} activateMenu={activateMenu} editMenuWebModal={editMenuWebModal} deleteMenu={deleteMenu}/>)
             })
         });
         setListItems(listItemsArray);
@@ -81,6 +81,34 @@ export default function MenuWebList(props) {
         );
       };
 
+
+    const deleteMenu = menu => {
+
+        const accesToken = getAccessTokenApi();
+
+        confirm({
+            title: "Eliminando menu",
+            content: `¿Estas seguro de que quieres eliminar el menu ${menu.title}?`,
+            okText: "Eliminar",
+            okType: "danger",
+            cancelText: "Cancelar",
+            onOk() {
+            deleteMenuApi(accesToken, menu._id)
+                .then(response => {
+                    notification["success"]({
+                        message: response
+                    });
+                setReloadMenuWeb(true);
+                })
+                .catch(() => {
+                    notification["error"]({
+                        message: "Error del servidor, intentelo más tarde."
+                    });
+                });
+            }
+        });
+    };
+
     // useState
     // useEffect
     return (
@@ -101,14 +129,14 @@ export default function MenuWebList(props) {
 }
 
 function MenuItem(props){
-   const { item, activateMenu, editMenuWebModal} = props;
+   const { item, activateMenu, editMenuWebModal, deleteMenu } = props;
 
    return (
        <List.Item
             actions={[
                 <Switch defaultChecked={item.active} onChange={ e => activateMenu(item, e)} />,
                 <Button type="primary" onClick={() => editMenuWebModal(item)}><Icon type="edit"/></Button>,
-                <Button type="danger"><Icon type="delete"/></Button>
+                <Button type="danger" onClick={() => deleteMenu(item)}><Icon type="delete"/></Button>
             ]}
        >
            <List.Item.Meta title={item.title} description={item.url} />
