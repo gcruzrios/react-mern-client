@@ -23,6 +23,8 @@ export function updateMenuApi(token, menuId, data){
         },
       };
 
+    console.log(url);
+    console.log(params);
     
     return fetch(url, params)
        .then((response) => {
@@ -61,3 +63,28 @@ export function activateMenuApi(token, menuId, status){
     return err.message;
     });
 }
+
+export function addMenuApi(token, menu) {
+    const url = `${basePath}/${apiVersion}/add-menu`;
+  
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify(menu)
+    };
+  
+    return fetch(url, params)
+      .then(response => {
+        return response.json();
+      })
+      .then(result => {
+        return result.message;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  
