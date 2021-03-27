@@ -6,14 +6,12 @@ import {
 import {Layout, Row, Col} from "antd";
 import "./LayoutBasic.scss";
 import MenuTop from '../components/Web/MenuTop';
-
-
-
+import Footer from '../components/Web/Footer';
 
 export default function LayoutBasic(props) {
 
     const { routes } = props;
-    const { Footer} = Layout
+    
 
     return(
         <>
@@ -27,7 +25,8 @@ export default function LayoutBasic(props) {
             </Row>
 
             <LoadRoutes routes={routes} />
-            <Footer>Greivin Cruz 2021</Footer>
+            
+            <Footer />
         </>
     )
 
