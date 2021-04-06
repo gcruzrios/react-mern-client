@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Spin, notification } from "antd";
-//import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";
 import { getCoursesApi } from "../api/course";
 import PresentationCourses from "../components/Web/Courses/PresentationCourses";
 import CoursesList from "../components/Web/Courses/CoursesList";
@@ -28,14 +28,14 @@ export default function Courses() {
 
   return (
     <>
-      {/* <Helmet> */}
+      <Helmet>
         <title>Cursos | Agustín Navarro Galdon</title>
         <meta
           name="description"
           content="Cursos | Web sobre programación de Agustín Navarro Galdon"
           data-react-helmet="true"
         />
-      {/* </Helmet> */}
+      </Helmet>
       <Row>
         <Col md={4} />
         <Col md={16}>

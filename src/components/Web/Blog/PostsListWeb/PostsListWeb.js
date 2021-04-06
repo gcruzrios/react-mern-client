@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Spin, List, notification } from "antd";
 import { Link } from "react-router-dom";
-//import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";
 import moment from "moment";
 import queryString from "query-string";
 import Pagination from "../../../Pagination";
@@ -41,10 +41,10 @@ export default function PostsListWeb(props) {
 
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <title>Blog de programación | Agustín Navarro Galdon</title>
-      </Helmet> */}
-      <title>Blog de programación | Agustín Navarro Galdon</title>
+      </Helmet>
+      {/* <title>Blog de programación | Agustín Navarro Galdon</title> */}
       <div className="posts-list-web">
         <h1>Blog</h1>
         <List

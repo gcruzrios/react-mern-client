@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Spin, notification } from "antd";
-//import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet";
 import moment from "moment";
 import { getPostApi } from "../../../../api/post";
 import "moment/locale/es";
@@ -37,11 +37,10 @@ export default function PostInfo(props) {
 
   return (
     <>
-      {/* <Helmet>
+      <Helmet>
         <title>{postInfo.title} | Agustín Navarro Galdon</title>
-      </Helmet> */}
-      <title>{postInfo.title} | Agustín Navarro Galdon</title>
-      
+      </Helmet>
+           
       <div className="post-info">
         <h1 className="post-info__title">{postInfo.title}</h1>
         <div className="post-info__creation-date">
